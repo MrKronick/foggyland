@@ -204,6 +204,63 @@
         }
         .scroll-top-btn.visible { opacity: 1; visibility: visible; }
         .scroll-top-btn:hover { background: rgba(50, 70, 25, 0.95); border-color: #e0c050; transform: translateY(-3px); }
+
+        /* Стили для отзывов */
+        .review-card {
+            background: #fefce8;
+            border-left: 5px solid #c2a44a;
+            padding: 0.8rem 1rem;
+            border-radius: 1rem;
+            margin-bottom: 0.8rem;
+            transition: all 0.25s;
+        }
+        .review-card:hover {
+            transform: translateX(4px);
+            background: #fffff3;
+            border-left-color: #e3b43c;
+            box-shadow: 0 6px 14px -4px rgba(120,90,20,0.15);
+        }
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.4rem;
+        }
+        .review-nick {
+            font-weight: 800;
+            color: #2c4723;
+            font-size: 1rem;
+        }
+        .review-stars {
+            color: #daa520;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+        }
+        .review-comment {
+            color: #3a5a2a;
+            margin: 0.4rem 0;
+            font-style: italic;
+        }
+        .review-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.7rem;
+            color: #6f5e2e;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+        }
+        .review-social {
+            background: #e8f0d0;
+            padding: 0.15rem 0.6rem;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        .review-date {
+            color: #8b6b2a;
+        }
     </style>
 </head>
 <body>
@@ -221,11 +278,12 @@
             <a href="#" class="nav-link active" data-section="home">🏠 Главная</a>
             <a href="#" class="nav-link" data-section="rules">📜 Правила</a>
             <a href="#" class="nav-link" data-section="shop">💖 Магазин</a>
+            <a href="#" class="nav-link" data-section="reviews">💬 Отзывы</a>
         </nav>
         <div class="section active" id="section-home">
             <div class="card" style="text-align:center;">
                 <h1>🌫️ FOGGYLAND</h1>
-                <span class="tagline">🍃 ванильный SMP • честная игра • уютная атмосфера</span>
+                <span class="tagline">🍃 ᴠᴀɴɪʟʟᴀ+ • честная игра • уютная атмосфера</span>
                 <div class="badge-row">
                     <span class="badge">🤝 без донат-привилегий</span>
                     <span class="badge">🎙️ голосовой чат</span>
@@ -244,7 +302,7 @@
             <div class="grid">
                 <div class="mini-card">
                     <h3>📜 О сервере</h3>
-                    <p>FoggyLand — ванильный SMP для тех, кто ценит честную игру и уютное комьюнити.</p>
+                    <p>FoggyLand — ᴠᴀɴɪʟʟᴀ+ сервер для тех, кто ценит честную игру и уютное комьюнити.</p>
                     <ul style="list-style:none; padding:0; margin-top:0.5rem;">
                         <li>🔹 Версия 1.21.11</li><li>🔹 PvP по согласию</li><li>🔹 Голосовой чат</li><li>🔹 Защита от гриферов</li>
                     </ul>
@@ -283,6 +341,33 @@
                 <iframe src="https://store.foggyland.ru" title="Магазин FoggyLand"></iframe>
             </div>
         </div>
+        <!-- Секция Отзывы -->
+        <div class="section" id="section-reviews">
+            <div class="card">
+                <h2 style="text-align:center; color:#3b6e2b;">💬 Отзывы наших игроков</h2>
+                <div style="margin-top:1.5rem;">
+
+                    <!-- ====== ОТЗЫВ 1 (ПРИМЕР) ====== -->
+                    <div class="review-card">
+                        <div class="review-header">
+                            <span class="review-nick">FSERF</span>
+                            <span class="review-stars">⭐⭐⭐⭐⭐</span>
+                        </div>
+                        <div class="review-comment">«сервер нравится»</div>
+                        <div class="review-meta">
+                            <span class="review-social">Telegram</span>
+                            <span class="review-date">01.07.2026</span>
+                        </div>
+                    </div>
+
+                    <!-- ====== ОТЗЫВ 2 (ПРИМЕР) ====== -->
+
+
+                    <!-- ====== ДОБАВЛЯЙ НОВЫЕ ОТЗЫВЫ ВЫШЕ (по такому же шаблону) ====== -->
+
+                </div>
+            </div>
+        </div>
     </div>
     <script>
         (function() {
@@ -312,6 +397,7 @@
                 home: document.getElementById('section-home'),
                 rules: document.getElementById('section-rules'),
                 shop: document.getElementById('section-shop'),
+                reviews: document.getElementById('section-reviews')
             };
             function switchSection(sectionId) {
                 Object.values(sections).forEach(s => s.classList.remove('active'));
@@ -459,7 +545,7 @@
             async function updateStatus() {
                 const container = document.getElementById('serverStatus');
                 try {
-                    const resp = await fetch('https://api.mcsrvstat.us/2/foggyland.ru');
+                    const resp = await fetch('https://api.mcsrvstat.us/2/93.120.184.204');
                     const data = await resp.json();
                     if (data.online) {
                         container.innerHTML = `<span class="status-dot online"></span> Онлайн • Игроков: ${data.players.online}`;
