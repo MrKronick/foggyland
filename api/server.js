@@ -64,11 +64,5 @@ app.post('/reviews', (req, res) => {
   res.status(201).json({ success: true });
 });
 
-// Временный маршрут для очистки всех отзывов (удали после использования!)
-app.get('/reset', (req, res) => {
-  saveReviews([]);
-  res.json({ success: true, message: 'Все отзывы удалены' });
-});
-
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Сервер отзывов запущен на порту ${PORT}`));
