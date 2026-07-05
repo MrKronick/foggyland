@@ -5,10 +5,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Твоя ссылка на npoint.io
 const NP_URL = 'https://api.npoint.io/d17fdc8a8a3d3587f2bd';
 
-// Загрузка отзывов
 async function loadReviews() {
   try {
     const res = await fetch(NP_URL);
@@ -20,7 +18,6 @@ async function loadReviews() {
   }
 }
 
-// Сохранение отзывов
 async function saveReviews(reviews) {
   try {
     await fetch(NP_URL, {
@@ -65,6 +62,12 @@ app.post('/reviews', async (req, res) => {
   await saveReviews(reviews);
 
   res.status(201).json({ success: true });
+});
+
+// Временный маршрут для очистки всех отзывов (удали после использования!)
+app.get('/reset', async (req, res) => {
+  await saveReviews([]);
+  res.json({ success: true, message: 'Все отзывы удалены' });
 });
 
 const PORT = process.env.PORT || 3000;
