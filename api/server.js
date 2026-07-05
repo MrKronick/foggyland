@@ -63,3 +63,6 @@ app.post('/reviews', async (req, res) => {
 
   res.status(201).json({ success: true });
 });
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Сервер отзывов запущен на порту ${PORT}`));
