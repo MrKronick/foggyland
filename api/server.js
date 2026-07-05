@@ -1,48 +1,48 @@
 const express = require('express');
 const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const NP_URL = 'https://api.npoint.io/d17fdc8a8a3d3587f2bd';
+const DATA_FILE = path.join(__dirname, 'reviews.json');
 
-async function loadReviews() {
+// Инициализация файла, если его нет
+if (!fs.existsSync(DATA_FILE)) {
+  fs.writeFileSync(DATA_FILE, '[]', 'utf8');
+}
+
+// Загрузка отзывов из файла
+function loadReviews() {
   try {
-    const res = await fetch(NP_URL);
-    const data = await res.json();
-    return Array.isArray(data) ? data : [];
+    const raw = fs.readFileSync(DATA_FILE, 'utf8');
+    return JSON.parse(raw);
   } catch (e) {
-    console.error('Ошибка загрузки:', e);
+    console.error('Ошибка чтения файла отзывов:', e);
     return [];
   }
 }
 
-async function saveReviews(reviews) {
-  try {
-    await fetch(NP_URL, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(reviews)
-    });
-  } catch (e) {
-    console.error('Ошибка сохранения:', e);
-  }
+// Сохранение отзывов в файл
+function saveReviews(reviews) {
+  fs.writeFileSync(DATA_FILE, JSON.stringify(reviews, null, 2), 'utf8');
 }
 
-app.get('/reviews', async (req, res) => {
-  const reviews = await loadReviews();
+app.get('/reviews', (req, res) => {
+  const reviews = loadReviews();
   res.json(reviews);
 });
 
-app.post('/reviews', async (req, res) => {
+app.post('/reviews', (req, res) => {
   const { nick, rating, comment, social } = req.body;
   if (!nick || !rating || !comment) {
     return res.status(400).json({ error: 'Заполните ник, оценку и комментарий' });
   }
 
   const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress;
-  const reviews = await loadReviews();
+  const reviews = loadReviews();
 
   if (reviews.some(r => r.ip === ip)) {
     return res.status(403).json({ error: 'Вы уже оставили отзыв с этого устройства.' });
@@ -59,7 +59,7 @@ app.post('/reviews', async (req, res) => {
   };
 
   reviews.push(newReview);
-  await saveReviews(reviews);
+  saveReviews(reviews);
 
   res.status(201).json({ success: true });
 });
