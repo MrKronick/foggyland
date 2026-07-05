@@ -8,10 +8,8 @@ app.use(cors());
 app.use(express.json());
 
 const DATA_FILE = path.join(__dirname, 'reviews.json');
-// Секретный ключ для защищённых действий (придумай свой или оставь этот)
-const ADMIN_SECRET = process.env.ADMIN_SECRET || '951902secret';
+const ADMIN_SECRET = process.env.ADMIN_SECRET || 'мой_секретный_ключ_2026';
 
-// Инициализация файла, если его нет
 if (!fs.existsSync(DATA_FILE)) {
   fs.writeFileSync(DATA_FILE, '[]', 'utf8');
 }
@@ -35,6 +33,14 @@ app.get('/reviews', (req, res) => {
   res.json(reviews);
 });
 
+// Проверка, можно ли этому IP оставить отзыв
+app.get('/check-ip', (req, res) => {
+  const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress;
+  const reviews = loadReviews();
+  const hasReviewed = reviews.some(r => r.ip === ip);
+  res.json({ allowed: !hasReviewed });
+});
+
 app.post('/reviews', (req, res) => {
   const { nick, rating, comment, social } = req.body;
   if (!nick || !rating || !comment) {
@@ -44,7 +50,6 @@ app.post('/reviews', (req, res) => {
   const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress;
   const reviews = loadReviews();
 
-  // Проверка по IP (игнорируется, если IP пустой – значит, был сброс)
   if (reviews.some(r => r.ip && r.ip === ip)) {
     return res.status(403).json({ error: 'Вы уже оставили отзыв с этого устройства.' });
   }
@@ -65,7 +70,6 @@ app.post('/reviews', (req, res) => {
   res.status(201).json({ success: true });
 });
 
-// Полный сброс всех отзывов (удаляет всё) – требует секретный ключ
 app.get('/reset', (req, res) => {
   if (req.query.secret !== ADMIN_SECRET) {
     return res.status(403).json({ error: 'Неверный секретный ключ' });
@@ -74,7 +78,6 @@ app.get('/reset', (req, res) => {
   res.json({ success: true, message: 'Все отзывы удалены' });
 });
 
-// Сброс только IP-адресов (сохраняет отзывы, но разрешает повторные отправки)
 app.get('/reset-ips', (req, res) => {
   if (req.query.secret !== ADMIN_SECRET) {
     return res.status(403).json({ error: 'Неверный секретный ключ' });
