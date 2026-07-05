@@ -8,13 +8,14 @@ app.use(cors());
 app.use(express.json());
 
 const DATA_FILE = path.join(__dirname, 'reviews.json');
+// Секретный ключ для защищённых действий (придумай свой или оставь этот)
+const ADMIN_SECRET = process.env.ADMIN_SECRET || '951902secret';
 
 // Инициализация файла, если его нет
 if (!fs.existsSync(DATA_FILE)) {
   fs.writeFileSync(DATA_FILE, '[]', 'utf8');
 }
 
-// Загрузка отзывов из файла
 function loadReviews() {
   try {
     const raw = fs.readFileSync(DATA_FILE, 'utf8');
@@ -25,7 +26,6 @@ function loadReviews() {
   }
 }
 
-// Сохранение отзывов в файл
 function saveReviews(reviews) {
   fs.writeFileSync(DATA_FILE, JSON.stringify(reviews, null, 2), 'utf8');
 }
@@ -44,7 +44,8 @@ app.post('/reviews', (req, res) => {
   const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress;
   const reviews = loadReviews();
 
-  if (reviews.some(r => r.ip === ip)) {
+  // Проверка по IP (игнорируется, если IP пустой – значит, был сброс)
+  if (reviews.some(r => r.ip && r.ip === ip)) {
     return res.status(403).json({ error: 'Вы уже оставили отзыв с этого устройства.' });
   }
 
@@ -62,6 +63,26 @@ app.post('/reviews', (req, res) => {
   saveReviews(reviews);
 
   res.status(201).json({ success: true });
+});
+
+// Полный сброс всех отзывов (удаляет всё) – требует секретный ключ
+app.get('/reset', (req, res) => {
+  if (req.query.secret !== ADMIN_SECRET) {
+    return res.status(403).json({ error: 'Неверный секретный ключ' });
+  }
+  saveReviews([]);
+  res.json({ success: true, message: 'Все отзывы удалены' });
+});
+
+// Сброс только IP-адресов (сохраняет отзывы, но разрешает повторные отправки)
+app.get('/reset-ips', (req, res) => {
+  if (req.query.secret !== ADMIN_SECRET) {
+    return res.status(403).json({ error: 'Неверный секретный ключ' });
+  }
+  const reviews = loadReviews();
+  const updated = reviews.map(r => ({ ...r, ip: '' }));
+  saveReviews(updated);
+  res.json({ success: true, message: 'IP-адреса во всех отзывах сброшены' });
 });
 
 const PORT = process.env.PORT || 3000;
