@@ -205,7 +205,7 @@
         .scroll-top-btn.visible { opacity: 1; visibility: visible; }
         .scroll-top-btn:hover { background: rgba(50, 70, 25, 0.95); border-color: #e0c050; transform: translateY(-3px); }
 
-        /* Стили для отзывов */
+        /* Отзывы */
         .review-card {
             background: #fefce8;
             border-left: 5px solid #c2a44a;
@@ -214,53 +214,37 @@
             margin-bottom: 0.8rem;
             transition: all 0.25s;
         }
-        .review-card:hover {
-            transform: translateX(4px);
-            background: #fffff3;
-            border-left-color: #e3b43c;
-            box-shadow: 0 6px 14px -4px rgba(120,90,20,0.15);
+        .review-card:hover { transform: translateX(4px); background: #fffff3; border-left-color: #e3b43c; box-shadow: 0 6px 14px -4px rgba(120,90,20,0.15); }
+        .review-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.4rem; }
+        .review-nick { font-weight: 800; color: #2c4723; font-size: 1rem; }
+        .review-stars { color: #daa520; letter-spacing: 2px; font-size: 0.9rem; }
+        .review-comment { color: #3a5a2a; margin: 0.4rem 0; font-style: italic; }
+        .review-meta { display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: #6f5e2e; flex-wrap: wrap; gap: 0.3rem; }
+        .review-social { background: #e8f0d0; padding: 0.15rem 0.6rem; border-radius: 20px; display: inline-block; }
+        .review-date { color: #8b6b2a; }
+
+        .input-field {
+            width: 100%;
+            padding: 10px 15px;
+            border-radius: 30px;
+            border: 1px solid #ccc;
+            background: #fff;
+            color: #333;
+            font-family: inherit;
+            margin-bottom: 10px;
+            box-sizing: border-box;
         }
-        .review-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 0.4rem;
+        .btn {
+            background: linear-gradient(135deg, #7fa052, #c2a44a);
+            border: none;
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+            transition: 0.3s;
         }
-        .review-nick {
-            font-weight: 800;
-            color: #2c4723;
-            font-size: 1rem;
-        }
-        .review-stars {
-            color: #daa520;
-            letter-spacing: 2px;
-            font-size: 0.9rem;
-        }
-        .review-comment {
-            color: #3a5a2a;
-            margin: 0.4rem 0;
-            font-style: italic;
-        }
-        .review-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.7rem;
-            color: #6f5e2e;
-            flex-wrap: wrap;
-            gap: 0.3rem;
-        }
-        .review-social {
-            background: #e8f0d0;
-            padding: 0.15rem 0.6rem;
-            border-radius: 20px;
-            display: inline-block;
-        }
-        .review-date {
-            color: #8b6b2a;
-        }
+        .btn:hover { transform: scale(1.04); box-shadow: 0 0 14px rgba(200,160,50,0.5); }
     </style>
 </head>
 <body>
@@ -304,7 +288,7 @@
                     <h3>📜 О сервере</h3>
                     <p>FoggyLand — ᴠᴀɴɪʟʟᴀ+ сервер для тех, кто ценит честную игру и уютное комьюнити.</p>
                     <ul style="list-style:none; padding:0; margin-top:0.5rem;">
-                        <li>🔹 Версия 1.21.11</li><li>🔹 PvP по согласию</li><li>🔹 Голосовой чат</li><li>🔹 Защита от гриферов</li>
+                        <li>🔹 Версия ядра 1.21.11</li><li>🔹 PvP по согласию</li><li>🔹 Голосовой чат</li><li>🔹 Защита от гриферов</li>
                     </ul>
                     <div style="margin-top:0.7rem; background:#e0ffe0; padding:0.3rem 0.7rem; border-radius:2rem; display:inline-block; font-weight:bold; color:#006400;">🕐 8:00–22:00 МСК</div>
                 </div>
@@ -345,32 +329,34 @@
         <div class="section" id="section-reviews">
             <div class="card">
                 <h2 style="text-align:center; color:#3b6e2b;">💬 Отзывы наших игроков</h2>
-                <div style="margin-top:1.5rem;">
 
-                    <!-- ====== ОТЗЫВ 1 (ПРИМЕР) ====== -->
-                    <div class="review-card">
-                        <div class="review-header">
-                            <span class="review-nick">FSERF</span>
-                            <span class="review-stars">⭐⭐⭐⭐⭐</span>
-                        </div>
-                        <div class="review-comment">«сервер нравится»</div>
-                        <div class="review-meta">
-                            <span class="review-social">Telegram</span>
-                            <span class="review-date">01.07.2026</span>
-                        </div>
-                    </div>
+                <!-- Список отзывов (загружается динамически) -->
+                <div id="reviewsList" style="margin-top:1.5rem;">Загрузка отзывов...</div>
 
-                    <!-- ====== ОТЗЫВ 2 (ПРИМЕР) ====== -->
-
-
-                    <!-- ====== ДОБАВЛЯЙ НОВЫЕ ОТЗЫВЫ ВЫШЕ (по такому же шаблону) ====== -->
-
+                <!-- Форма для нового отзыва -->
+                <div id="reviewForm" style="margin-top:2rem; border-top:1px dashed #c2b56b; padding-top:1.5rem;">
+                    <h3 style="color:#3b6e2b; margin-bottom:0.8rem;">Оставить отзыв</h3>
+                    <input type="text" id="reviewNick" class="input-field" placeholder="Ваш ник">
+                    <select id="reviewRating" class="input-field">
+                        <option value="5">⭐⭐⭐⭐⭐ (5)</option>
+                        <option value="4">⭐⭐⭐⭐ (4)</option>
+                        <option value="3">⭐⭐⭐ (3)</option>
+                        <option value="2">⭐⭐ (2)</option>
+                        <option value="1">⭐ (1)</option>
+                    </select>
+                    <textarea id="reviewComment" class="input-field" rows="3" placeholder="Ваш комментарий"></textarea>
+                    <input type="text" id="reviewSocial" class="input-field" placeholder="Откуда вы? (Discord, Telegram, ВК...)">
+                    <button id="submitReviewBtn" class="btn">📨 Отправить отзыв</button>
+                    <p id="reviewError" style="color:#ff6b6b; margin-top:0.5rem;"></p>
                 </div>
             </div>
         </div>
     </div>
     <script>
         (function() {
+            // ⚠️ ЗАМЕНИ НА URL, КОТОРЫЙ ВЫДАСТ RENDER (например, https://foggyland-reviews.onrender.com)
+            const API_URL = 'https://ТВОЙ-СЕРВЕР.onrender.com';
+
             const loadingOverlay = document.getElementById('loadingOverlay');
             const mainContent = document.getElementById('mainContent');
             window.addEventListener('load', () => {
@@ -405,6 +391,7 @@
                 navLinks.forEach(link => link.classList.toggle('active', link.dataset.section === sectionId));
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 if (sectionId === 'rules' && !window.rulesRendered) renderRules();
+                if (sectionId === 'reviews') loadReviews();
             }
             navLinks.forEach(link => link.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -545,7 +532,7 @@
             async function updateStatus() {
                 const container = document.getElementById('serverStatus');
                 try {
-                    const resp = await fetch('https://api.mcsrvstat.us/2/93.120.184.204');
+                    const resp = await fetch('https://api.mcsrvstat.us/2/foggyland.ru');
                     const data = await resp.json();
                     if (data.online) {
                         container.innerHTML = `<span class="status-dot online"></span> Онлайн • Игроков: ${data.players.online}`;
@@ -566,9 +553,100 @@
             const scrollBtn = document.getElementById('scrollTopBtn');
             window.addEventListener('scroll', () => scrollBtn.classList.toggle('visible', window.pageYOffset > 400));
             scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+            // ========== ОТЗЫВЫ ==========
+            let hasSubmitted = localStorage.getItem('foggyland_review_submitted') === 'true';
+
+            function loadReviews() {
+                const list = document.getElementById('reviewsList');
+                fetch(`${API_URL}/reviews`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (!Array.isArray(data) || data.length === 0) {
+                            list.innerHTML = '<p style="text-align:center; color:#6f5e2e;">Пока нет отзывов. Будьте первым!</p>';
+                            return;
+                        }
+                        list.innerHTML = data.map(r => {
+                            const stars = '⭐'.repeat(r.rating || 5);
+                            const date = new Date(r.date).toLocaleDateString('ru-RU');
+                            return `
+                                <div class="review-card">
+                                    <div class="review-header">
+                                        <span class="review-nick">${escapeHtml(r.nick)}</span>
+                                        <span class="review-stars">${stars}</span>
+                                    </div>
+                                    <div class="review-comment">«${escapeHtml(r.comment)}»</div>
+                                    <div class="review-meta">
+                                        <span class="review-social">${escapeHtml(r.social || 'Не указано')}</span>
+                                        <span class="review-date">${date}</span>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('');
+                    })
+                    .catch(() => {
+                        list.innerHTML = '<p style="color:#ff6b6b; text-align:center;">Не удалось загрузить отзывы</p>';
+                    });
+            }
+
+            function escapeHtml(text) {
+                return String(text).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            }
+
+            function updateFormState() {
+                const form = document.getElementById('reviewForm');
+                if (hasSubmitted) {
+                    form.innerHTML = '<p style="color:#32CD32; text-align:center;">✅ Вы уже оставили отзыв. Спасибо!</p>';
+                }
+            }
+
+            document.getElementById('submitReviewBtn').addEventListener('click', async () => {
+                if (hasSubmitted) {
+                    document.getElementById('reviewError').textContent = 'Вы уже оставили отзыв с этого устройства.';
+                    return;
+                }
+                const nick = document.getElementById('reviewNick').value.trim();
+                const rating = document.getElementById('reviewRating').value;
+                const comment = document.getElementById('reviewComment').value.trim();
+                const social = document.getElementById('reviewSocial').value.trim();
+                if (!nick || !comment) {
+                    document.getElementById('reviewError').textContent = 'Заполните ник и комментарий.';
+                    return;
+                }
+                try {
+                    const res = await fetch(`${API_URL}/reviews`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ nick, rating, comment, social })
+                    });
+                    const data = await res.json();
+                    if (res.status === 403) {
+                        document.getElementById('reviewError').textContent = data.error;
+                        localStorage.setItem('foggyland_review_submitted', 'true');
+                        hasSubmitted = true;
+                        updateFormState();
+                        loadReviews();
+                    } else if (res.ok) {
+                        localStorage.setItem('foggyland_review_submitted', 'true');
+                        hasSubmitted = true;
+                        document.getElementById('reviewError').textContent = '';
+                        updateFormState();
+                        loadReviews();
+                    } else {
+                        document.getElementById('reviewError').textContent = data.error || 'Ошибка. Попробуйте позже.';
+                    }
+                } catch (err) {
+                    document.getElementById('reviewError').textContent = 'Ошибка соединения с сервером.';
+                }
+            });
+
+            updateFormState();
+
+            // ========== КОНЕЦ ОТЗЫВОВ ==========
+
             createFireflies();
             updateStatus();
-            setInterval(updateStatus, 15000);
+            setInterval(updateStatus, 45000);
         })();
     </script>
 </body>
