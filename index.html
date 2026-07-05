@@ -555,7 +555,7 @@
             scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
             // ========== ОТЗЫВЫ ==========
-            let hasSubmitted = localStorage.getItem('foggyland_review_submitted') === 'false';
+            let hasSubmitted = localStorage.getItem('foggyland_review_submitted') === 'true';
 
             function loadReviews() {
                 const list = document.getElementById('reviewsList');
