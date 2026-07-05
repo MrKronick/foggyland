@@ -1,51 +1,53 @@
 const express = require('express');
 const cors = require('cors');
-const fs = require('fs');
-const path = require('path');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const DATA_FILE = path.join(__dirname, 'reviews.json');
+// Твоя ссылка на npoint.io
+const NP_URL = 'https://api.npoint.io/d17fdc8a8a3d3587f2bd';
 
-// Загрузка отзывов из файла
-function loadReviews() {
+// Загрузка отзывов
+async function loadReviews() {
   try {
-    if (fs.existsSync(DATA_FILE)) {
-      const raw = fs.readFileSync(DATA_FILE, 'utf8');
-      return JSON.parse(raw);
-    }
+    const res = await fetch(NP_URL);
+    const data = await res.json();
+    return Array.isArray(data) ? data : [];
   } catch (e) {
-    console.error('Ошибка чтения файла отзывов:', e);
+    console.error('Ошибка загрузки:', e);
+    return [];
   }
-  return [];
 }
 
-// Сохранение отзывов в файл
-function saveReviews(reviews) {
-  fs.writeFileSync(DATA_FILE, JSON.stringify(reviews, null, 2), 'utf8');
+// Сохранение отзывов
+async function saveReviews(reviews) {
+  try {
+    await fetch(NP_URL, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(reviews)
+    });
+  } catch (e) {
+    console.error('Ошибка сохранения:', e);
+  }
 }
 
-let reviews = loadReviews();
-
-// Получить все отзывы (публично)
-app.get('/reviews', (req, res) => {
+app.get('/reviews', async (req, res) => {
+  const reviews = await loadReviews();
   res.json(reviews);
 });
 
-// Добавить отзыв (один раз с IP)
-app.post('/reviews', (req, res) => {
+app.post('/reviews', async (req, res) => {
   const { nick, rating, comment, social } = req.body;
   if (!nick || !rating || !comment) {
     return res.status(400).json({ error: 'Заполните ник, оценку и комментарий' });
   }
 
   const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress;
+  const reviews = await loadReviews();
 
-  // Проверка, не оставлял ли уже этот IP отзыв
-  const alreadyReviewed = reviews.some(r => r.ip === ip);
-  if (alreadyReviewed) {
+  if (reviews.some(r => r.ip === ip)) {
     return res.status(403).json({ error: 'Вы уже оставили отзыв с этого устройства.' });
   }
 
@@ -60,7 +62,7 @@ app.post('/reviews', (req, res) => {
   };
 
   reviews.push(newReview);
-  saveReviews(reviews);
+  await saveReviews(reviews);
 
   res.status(201).json({ success: true });
 });
