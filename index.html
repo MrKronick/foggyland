@@ -29,7 +29,6 @@
             --shadow-lg: 0 20px 40px -10px rgba(0, 0, 0, 0.25);
             --transition-theme: 0.4s ease;
         }
-
         .dark-theme {
             --bg-deep: #0f1a0a;
             --bg-mid: #1a2a12;
@@ -49,7 +48,6 @@
             --cookie-btn-border: #b08a2a;
             --theme-toggle-bg: rgba(20, 25, 15, 0.85);
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
@@ -61,7 +59,6 @@
             position: relative;
             transition: background var(--transition-theme), color var(--transition-theme);
         }
-
         .loading-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #1a2e0f; z-index: 9999;
@@ -80,7 +77,6 @@
         .loading-bar-fill { height: 100%; background: linear-gradient(90deg, #7fa052, #c2a44a); border-radius: 10px; animation: loadBar 1.5s ease-in-out forwards; width: 0%; }
         @keyframes loadPulse { 0%,100%{ filter: drop-shadow(0 0 8px rgba(200,180,60,0.5)); } 50%{ filter: drop-shadow(0 0 20px rgba(240,210,80,0.9)); } }
         @keyframes loadBar { 0%{ width:0; } 60%{ width:85%; } 100%{ width:100%; } }
-
         .fog-background {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;
             background: linear-gradient(170deg, var(--bg-deep) 0%, var(--bg-mid) 20%, var(--green-dark) 45%, var(--green-mid) 65%, var(--green-light) 80%, #9bb86a 100%);
@@ -99,7 +95,6 @@
             0%{ transform: translate(0,0) scale(1); opacity:0.3; }
             100%{ transform: translate(2%,1%) scale(1.05); opacity:0.5; }
         }
-
         .firefly {
             position: absolute; width: 4px; height: 4px; background: #f9f3b0; border-radius: 50%;
             box-shadow: 0 0 8px 3px rgba(250,240,120,0.5); animation: fireflyDrift 25s infinite ease-in-out;
@@ -110,9 +105,7 @@
             50%{ transform: translate(20px,-40px) scale(1); opacity:0.6; }
             100%{ transform: translate(-10px,-80px) scale(0.5); opacity:0.1; }
         }
-
         .main-wrapper { max-width: 1100px; margin: 0 auto; padding: 0.8rem 0.8rem 1.5rem; position: relative; z-index: 2; }
-
         .nav-sticky {
             position: sticky; top: 0.6rem; z-index: 20;
             background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
@@ -134,14 +127,12 @@
             .nav-sticky { padding: 0.4rem 0.5rem; gap: 0.1rem; }
             .nav-link { font-size: 0.7rem; padding: 0.35rem 0.6rem; }
         }
-
         .section { display: none; animation: fadeSlideIn 0.4s ease backwards; }
         .section.active { display: block; }
         @keyframes fadeSlideIn {
             0%{ opacity:0; transform: translateY(15px); }
             100%{ opacity:1; transform: translateY(0); }
         }
-
         .card {
             background: var(--card-bg); border-radius: var(--radius-xl); padding: 1.5rem 1.2rem;
             box-shadow: var(--shadow-lg), 0 0 0 1px rgba(120, 90, 30, 0.2);
@@ -150,7 +141,6 @@
             transition: box-shadow 0.3s, transform 0.2s, background var(--transition-theme), border-color var(--transition-theme);
         }
         .card:hover { box-shadow: 0 25px 45px -8px rgba(30, 20, 0, 0.45), 0 0 0 1px rgba(170, 135, 45, 0.5); }
-
         h1 {
             font-size: 2.5rem; font-weight: 900; text-align: center;
             background: linear-gradient(135deg, var(--green-dark), var(--gold), var(--green-mid));
@@ -163,7 +153,6 @@
             0%{ filter: drop-shadow(0 0 6px rgba(200,180,60,0.3)); }
             100%{ filter: drop-shadow(0 0 16px rgba(240,210,80,0.7)); }
         }
-
         .tagline {
             text-align: center; font-size: 0.95rem; color: var(--text-mid);
             border-bottom: 1px dashed #c2b56b; display: inline-block; padding-bottom: 0.3rem; margin-bottom: 0.8rem;
@@ -175,7 +164,6 @@
             transition: transform 0.2s, box-shadow 0.2s;
         }
         .badge:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-
         .ip {
             background: #e0ffe0; display: inline-block; padding: 0.4rem 1.2rem; border-radius: 2rem;
             font-family: monospace; font-size: 1rem; font-weight: bold; color: #006400;
@@ -189,14 +177,12 @@
             transform: rotate(45deg); animation: shimmer 4s infinite;
         }
         @keyframes shimmer { 0%{ left: -50%; } 100%{ left: 150%; } }
-
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 1rem 0; }
         .mini-card {
             background: var(--card-bg); border-radius: 1rem; padding: 1rem;
             border: 1px solid rgba(120,100,30,0.2); transition: all 0.3s, background var(--transition-theme);
         }
         .mini-card:hover { transform: translateY(-6px); box-shadow: 0 12px 20px rgba(0,0,0,0.12); border-color: #32CD32; }
-
         .social-links { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; margin: 0.6rem 0; }
         .social-btn {
             display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.5rem 1rem; border-radius: 2rem;
@@ -208,22 +194,18 @@
         .btn-youtube { background: #ff0000; }
         .btn-owner { background: #2c5e2c; }
         .btn-voice { background: #8e44ad; }
-
         .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 0.3rem; }
         .status-dot.online { background: #32CD32; box-shadow: 0 0 10px #32CD32; animation: glowDot 1.5s ease-in-out infinite; }
         .status-dot.offline { background: #ff4444; box-shadow: 0 0 8px #ff4444; animation: glowDotOff 2s infinite; }
         @keyframes glowDot { 0%,100%{ box-shadow:0 0 5px #32CD32; } 50%{ box-shadow:0 0 14px #32CD32; } }
         @keyframes glowDotOff { 0%,100%{ box-shadow:0 0 4px #ff4444; opacity:0.7; } 50%{ box-shadow:0 0 12px #ff4444; opacity:1; } }
-
         .footer-note { text-align: center; margin-top: 1.2rem; font-size: 0.75rem; color: var(--text-mid); background: var(--card-bg); padding: 0.6rem; border-radius: 2rem; }
-
         .rule-category {
             font-size: 1.2rem; font-weight: 800; color: var(--green-dark); margin: 1.5rem 0 0.6rem;
             padding-bottom: 0.3rem; border-bottom: 2px solid #c2b56b;
             transition: color 0.2s, border-color 0.2s, background var(--transition-theme);
         }
         .rule-category:hover { color: #4f852f; border-bottom-color: var(--gold-light); }
-
         .rule-item {
             background: var(--card-bg); border-left: 5px solid #a6c86e; padding: 0.6rem 0.9rem;
             border-radius: 0.9rem; margin-bottom: 0.5rem; transition: all 0.25s, background var(--transition-theme);
@@ -232,7 +214,6 @@
         .rule-number { color: var(--accent-amber, #8b6b2a); font-weight: 700; background: rgba(255,235,160,0.5); padding: 0.1rem 0.4rem; border-radius: 6px; font-size: 0.75rem; margin-right: 0.3rem; }
         .rule-punishment { margin-top: 0.5rem; font-size: 0.7rem; color: #a52a1a; background: #fff2cf; display: inline-block; padding: 0.2rem 0.6rem; border-radius: 14px; font-weight: 500; }
         .rule-note { margin-top: 0.5rem; font-size: 0.65rem; color: #6f5e2e; background: #f3f7e6; display: inline-block; padding: 0.2rem 0.6rem; border-radius: 14px; }
-
         .shop-iframe-wrapper {
             background: rgba(20,15,25,0.7); border-radius: var(--radius-xl); overflow: hidden;
             box-shadow: var(--shadow-lg); border: 1px solid rgba(255,107,107,0.2);
@@ -240,7 +221,6 @@
         .shop-iframe-wrapper iframe { display: block; width: 100%; height: 80vh; border: none; }
         @media (min-width: 1400px) { .shop-iframe-wrapper iframe { height: 70vh; } }
         @media (max-width: 600px) { .shop-iframe-wrapper iframe { height: 75vh; } }
-
         .scroll-top-btn {
             position: fixed; bottom: 1.2rem; right: 1.2rem; z-index: 50; width: 38px; height: 38px; border-radius: 50%;
             background: rgba(30, 45, 15, 0.85); border: 2px solid rgba(180, 150, 50, 0.5); color: #d4dca8;
@@ -249,8 +229,6 @@
         }
         .scroll-top-btn.visible { opacity: 1; visibility: visible; }
         .scroll-top-btn:hover { background: rgba(50, 70, 25, 0.95); border-color: #e0c050; transform: translateY(-3px); }
-
-        /* Переключатель темы */
         .theme-toggle {
             position: fixed; top: 1rem; right: 1rem; z-index: 100;
             background: var(--theme-toggle-bg); border: 1px solid var(--gold);
@@ -261,8 +239,6 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
         .theme-toggle:hover { transform: scale(1.1); }
-
-        /* Баннер cookie */
         .cookie-banner {
             position: fixed; bottom: 0; left: 0; right: 0; z-index: 999;
             background: var(--bg-cookie); color: var(--cookie-text);
@@ -280,8 +256,6 @@
         }
         .cookie-btn:hover { background: var(--cookie-btn); border-color: var(--cookie-btn); color: white; }
         .cookie-btn.accept { background: var(--cookie-btn); border-color: var(--cookie-btn); color: white; }
-
-        /* Отзывы */
         .reviews-stats {
             display: flex; justify-content: center; align-items: center; gap: 1.5rem; margin-top: 0.5rem; margin-bottom: 1rem;
             font-size: 0.95rem; color: var(--text-mid);
@@ -297,7 +271,6 @@
         .reviews-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 10px; }
         .reviews-scroll::-webkit-scrollbar-thumb { background: #7fa052; border-radius: 10px; }
         .reviews-scroll::-webkit-scrollbar-thumb:hover { background: #5b8238; }
-
         .review-card {
             background: #fefce8;
             border-left: 5px solid #c2a44a;
@@ -319,12 +292,24 @@
         .review-meta { display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: #6f5e2e; flex-wrap: wrap; gap: 0.3rem; }
         .review-social { background: #e8f0d0; padding: 0.15rem 0.6rem; border-radius: 20px; display: inline-block; }
         .review-date { color: #8b6b2a; }
-
+        .admin-reply {
+            margin-top: 0.8rem;
+            padding: 0.7rem 1rem;
+            background: #e8f0d0;
+            border-left: 5px solid #2c5e2c;
+            border-radius: 0.8rem;
+            font-size: 0.85rem;
+            color: #2c4723;
+        }
+        .admin-reply-header { font-weight: 700; margin-bottom: 0.3rem; color: #1e3a1f; }
+        .reply-form { margin-top: 0.8rem; display: flex; flex-direction: column; gap: 0.5rem; }
+        .reply-form textarea { width: 100%; padding: 8px 12px; border-radius: 12px; border: 1px solid #a6c86e; background: #fffff3; resize: vertical; }
+        .reply-form button { align-self: flex-end; background: #2c5e2c; color: white; border: none; padding: 5px 16px; border-radius: 20px; cursor: pointer; font-weight: 600; }
+        .admin-login { margin-bottom: 1rem; display: flex; gap: 0.5rem; align-items: center; }
+        .admin-login input { padding: 5px 10px; border-radius: 20px; border: 1px solid #ccc; }
         .input-field { width: 100%; padding: 10px 15px; border-radius: 30px; border: 1px solid #ccc; background: #fff; color: #333; font-family: inherit; margin-bottom: 10px; box-sizing: border-box; }
         .btn { background: linear-gradient(135deg, #7fa052, #c2a44a); border: none; padding: 10px 25px; border-radius: 30px; font-weight: bold; cursor: pointer; color: white; transition: 0.3s; }
         .btn:hover { transform: scale(1.04); box-shadow: 0 0 14px rgba(200,160,50,0.5); }
-
-        /* Обёртка для правил с прокруткой */
         .rules-scroll {
             max-height: 70vh;
             overflow-y: auto;
@@ -335,10 +320,7 @@
         .rules-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 10px; }
         .rules-scroll::-webkit-scrollbar-thumb { background: #7fa052; border-radius: 10px; }
         .rules-scroll::-webkit-scrollbar-thumb:hover { background: #5b8238; }
-
-        .version-info {
-            text-align: center; margin-top: 2rem; font-size: 0.7rem; color: var(--text-mid); opacity: 0.8;
-        }
+        .version-info { text-align: center; margin-top: 2rem; font-size: 0.7rem; color: var(--text-mid); opacity: 0.8; }
     </style>
 </head>
 <body>
@@ -347,15 +329,10 @@
         <div class="loading-subtitle">загрузка...</div>
         <div class="loading-bar-track"><div class="loading-bar-fill"></div></div>
     </div>
-
     <div class="fog-background" id="fogBackground">
         <div class="fog-cloud"></div><div class="fog-cloud"></div><div class="fog-cloud"></div>
     </div>
-
-    <!-- Переключатель темы -->
     <div class="theme-toggle" id="themeToggle" title="Сменить тему">🌙</div>
-
-    <!-- Баннер cookie -->
     <div class="cookie-banner" id="cookieBanner">
         <p>🍪 На нашем сайте используются cookie для улучшения работы и отзывов. Продолжая, вы соглашаетесь.</p>
         <div class="cookie-buttons">
@@ -363,9 +340,7 @@
             <button class="cookie-btn accept" id="cookieAll">Принять все</button>
         </div>
     </div>
-
     <button class="scroll-top-btn" id="scrollTopBtn">↑</button>
-
     <div class="main-wrapper" id="mainContent" style="opacity:0; transition: opacity 0.5s ease;">
         <nav class="nav-sticky">
             <a href="#" class="nav-link active" data-section="home">🏠 Главная</a>
@@ -373,8 +348,6 @@
             <a href="#" class="nav-link" data-section="shop">💖 Магазин</a>
             <a href="#" class="nav-link" data-section="reviews">💬 Отзывы</a>
         </nav>
-
-        <!-- Главная -->
         <div class="section active" id="section-home">
             <div class="card" style="text-align:center;">
                 <h1>🌫️ FOGGYLAND</h1>
@@ -420,7 +393,7 @@
                         <span>💰 <a href="#" class="nav-link-inline" data-section="shop" style="color:#2e7d32; font-weight:600;">Магазин (донат)</a></span>
                         <span>💬 <a href="https://discord.gg/qnDrW4Gdq7" target="_blank" style="color:#5865F2; font-weight:600;">Discord</a></span>
                         <span>📢 <a href="https://t.me/foggyland" target="_blank" style="color:#0088cc; font-weight:600;">Telegram</a></span>
-                        <a href="https://misterlauncher.org/projects/foggyland/" target="_blank"><img src="//misterlauncher.org/images/widgets/vote2.png" alt="FoggyLand на MisterLauncher.org" title="FoggyLand на MisterLauncher.org" width="88" height="31" /></a>
+                        <span>🗳️ <a href="https://misterlauncher.org/projects/foggyland/" target="_blank" style="color:#ff8c00; font-weight:600;">Голосовать (MisterLauncher)</a></span>
                         <span>🗳️ <a href="https://hotmc.ru/minecraft-server-288250" target="_blank" style="color:#ff4500; font-weight:600;">Голосовать (HotMC)</a></span>
                         <span>🗳️ <a href="https://top-minecrafter.com/server/foggyland/" target="_blank" style="color:#1e90ff; font-weight:600;">Голосовать (Топ Майнкрафтер)</a></span>
                     </div>
@@ -428,28 +401,29 @@
             </div>
             <div class="footer-note">🧡 FoggyLand — место, где ванильный Minecraft становится уютным. © 2026</div>
         </div>
-
-        <!-- Правила (с прокруткой) -->
         <div class="section" id="section-rules">
             <div class="card">
                 <div class="rules-scroll" id="rulesCard"></div>
             </div>
         </div>
-
-        <!-- Магазин (iframe) -->
         <div class="section" id="section-shop">
             <div class="shop-iframe-wrapper">
                 <iframe src="https://store.foggyland.ru" title="Магазин FoggyLand"></iframe>
             </div>
         </div>
-
-        <!-- Отзывы -->
         <div class="section" id="section-reviews">
             <div class="card">
                 <h2 style="text-align:center; color:var(--green-dark); margin-top: -0.5rem;">💬 Отзывы наших игроков</h2>
                 <div class="reviews-stats" id="reviewsStats">
                     <span id="reviewsCount">0 отзывов</span>
                     <span id="reviewsAvg">★ 0.0</span>
+                </div>
+                <div id="adminPanel" style="text-align:center; margin-bottom:1rem;">
+                    <div id="adminLogin" class="admin-login" style="display: none;">
+                        <input type="password" id="adminKey" placeholder="Секретный ключ">
+                        <button id="adminLoginBtn" class="btn" style="padding: 5px 15px;">Войти</button>
+                    </div>
+                    <button id="showAdminLogin" class="btn" style="padding: 5px 15px;">🔑 Админ</button>
                 </div>
                 <div class="reviews-scroll" id="reviewsList">
                     <div class="loading-spinner" style="text-align:center; padding:2rem;">
@@ -460,22 +434,16 @@
                 <div id="reviewForm" style="margin-top:1.5rem; border-top:1px dashed #c2b56b; padding-top:1.5rem;"></div>
             </div>
         </div>
-
-        <!-- Версия сайта -->
-        <div class="version-info">
-            🛠️ Версия сайта 1.1 • Обновлено 08.07.2026
-        </div>
+        <div class="version-info">🛠️ Версия сайта 1.2 • Обновлено 09.07.2026</div>
     </div>
-
     <script>
         (function() {
             const API_URL = 'https://foggyland.onrender.com';
+            const ADMIN_SECRET = 'мой_секретный_ключ_2026';
 
             // Cookie Consent
             const cookieBanner = document.getElementById('cookieBanner');
-            if (localStorage.getItem('cookies_accepted')) {
-                cookieBanner.style.display = 'none';
-            }
+            if (localStorage.getItem('cookies_accepted')) cookieBanner.style.display = 'none';
             document.getElementById('cookieEssential').addEventListener('click', () => {
                 localStorage.setItem('cookies_accepted', 'true');
                 cookieBanner.style.display = 'none';
@@ -485,10 +453,9 @@
                 cookieBanner.style.display = 'none';
             });
 
-            // Theme Toggle with system preference
+            // Theme Toggle
             const themeToggle = document.getElementById('themeToggle');
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-
             function applyTheme(theme) {
                 if (theme === 'dark') {
                     document.body.classList.add('dark-theme');
@@ -500,24 +467,14 @@
                     localStorage.setItem('theme', 'light');
                 }
             }
-
             const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) {
-                applyTheme(savedTheme);
-            } else {
-                applyTheme(prefersDark.matches ? 'dark' : 'light');
-            }
-
-            // Listen for system theme changes (only if user hasn't manually chosen)
+            if (savedTheme) applyTheme(savedTheme);
+            else applyTheme(prefersDark.matches ? 'dark' : 'light');
             prefersDark.addEventListener('change', (e) => {
-                if (!localStorage.getItem('theme')) {
-                    applyTheme(e.matches ? 'dark' : 'light');
-                }
+                if (!localStorage.getItem('theme')) applyTheme(e.matches ? 'dark' : 'light');
             });
-
             themeToggle.addEventListener('click', () => {
-                const isDark = document.body.classList.contains('dark-theme');
-                applyTheme(isDark ? 'light' : 'dark');
+                applyTheme(document.body.classList.contains('dark-theme') ? 'light' : 'dark');
             });
 
             // Loading
@@ -551,25 +508,16 @@
                 shop: document.getElementById('section-shop'),
                 reviews: document.getElementById('section-reviews')
             };
-
             let reviewsAutoRefresh = null;
-
             function switchSection(sectionId) {
                 Object.values(sections).forEach(s => s.classList.remove('active'));
                 sections[sectionId].classList.add('active');
                 navLinks.forEach(link => link.classList.toggle('active', link.dataset.section === sectionId));
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 if (sectionId === 'rules' && !window.rulesRendered) renderRules();
-                if (sectionId === 'reviews') {
-                    onReviewsOpen();
-                } else {
-                    if (reviewsAutoRefresh) {
-                        clearInterval(reviewsAutoRefresh);
-                        reviewsAutoRefresh = null;
-                    }
-                }
+                if (sectionId === 'reviews') onReviewsOpen();
+                else if (reviewsAutoRefresh) { clearInterval(reviewsAutoRefresh); reviewsAutoRefresh = null; }
             }
-
             navLinks.forEach(link => link.addEventListener('click', (e) => {
                 e.preventDefault();
                 switchSection(link.dataset.section);
@@ -711,13 +659,10 @@
             async function updateStatus() {
                 const container = document.getElementById('serverStatus');
                 try {
-                    const resp = await fetch('https://api.mcsrvstat.us/2/93.120.184.204');
+                    const resp = await fetch('https://api.mcsrvstat.us/2/foggyland.ru');
                     const data = await resp.json();
-                    if (data.online) {
-                        container.innerHTML = `<span class="status-dot online"></span> Онлайн • Игроков: ${data.players.online}`;
-                    } else {
-                        container.innerHTML = `<span class="status-dot offline"></span> Оффлайн`;
-                    }
+                    if (data.online) container.innerHTML = `<span class="status-dot online"></span> Онлайн • Игроков: ${data.players.online}`;
+                    else container.innerHTML = `<span class="status-dot offline"></span> Оффлайн`;
                 } catch {
                     container.innerHTML = `<span class="status-dot offline"></span> Статус не определён`;
                 }
@@ -737,6 +682,7 @@
 
             // Отзывы
             let hasSubmitted = localStorage.getItem('foggyland_review_submitted') === 'true';
+            let isAdmin = localStorage.getItem('foggyland_admin') === 'true';
 
             async function checkIP() {
                 try {
@@ -769,25 +715,39 @@
                         list.innerHTML = data.map((r, i) => {
                             const stars = '⭐'.repeat(r.rating || 5);
                             const date = new Date(r.date).toLocaleDateString('ru-RU');
-                            return `
-                                <div class="review-card" style="animation-delay: ${i * 0.1}s">
-                                    <div class="review-header">
-                                        <span class="review-nick">${escapeHtml(r.nick)}</span>
-                                        <span class="review-stars">${stars}</span>
-                                    </div>
-                                    <div class="review-comment">«${escapeHtml(r.comment)}»</div>
-                                    <div class="review-meta">
-                                        <span class="review-social">${escapeHtml(r.social || 'Не указано')}</span>
-                                        <span class="review-date">${date}</span>
-                                    </div>
+                            let replyHtml = '';
+                            if (r.reply) {
+                                const replyDate = new Date(r.reply.date).toLocaleString('ru-RU');
+                                replyHtml = `<div class="admin-reply"><div class="admin-reply-header">Ответ администратора (${replyDate})</div><div>${escapeHtml(r.reply.text)}</div></div>`;
+                            }
+                            let adminBtn = '';
+                            if (isAdmin) {
+                                adminBtn = `<button class="reply-toggle-btn" data-id="${r.id}" style="background:none; border:1px solid #2c5e2c; color:#2c5e2c; padding:2px 10px; border-radius:12px; cursor:pointer; margin-top:0.5rem;">${r.reply ? '✏️ Изменить ответ' : '💬 Ответить'}</button>`;
+                            }
+                            return `<div class="review-card" style="animation-delay: ${i * 0.1}s">
+                                <div class="review-header">
+                                    <span class="review-nick">${escapeHtml(r.nick)}</span>
+                                    <span class="review-stars">${stars}</span>
                                 </div>
-                            `;
+                                <div class="review-comment">«${escapeHtml(r.comment)}»</div>
+                                <div class="review-meta">
+                                    <span class="review-social">${escapeHtml(r.social || 'Не указано')}</span>
+                                    <span class="review-date">${date}</span>
+                                </div>
+                                ${replyHtml}
+                                ${adminBtn}
+                                <div class="reply-form-container" id="replyForm-${r.id}" style="display:none;"></div>
+                            </div>`;
                         }).join('');
                         updateStats(data);
+                        document.querySelectorAll('.reply-toggle-btn').forEach(btn => {
+                            btn.addEventListener('click', (e) => {
+                                const id = e.target.dataset.id;
+                                toggleReplyForm(id);
+                            });
+                        });
                     })
-                    .catch(() => {
-                        list.innerHTML = '<p style="color:#ff6b6b; text-align:center;">Не удалось загрузить отзывы</p>';
-                    });
+                    .catch(() => list.innerHTML = '<p style="color:#ff6b6b; text-align:center;">Не удалось загрузить отзывы</p>');
             }
 
             function updateStats(reviews) {
@@ -814,8 +774,7 @@
                 if (hasSubmitted) {
                     form.innerHTML = '<p style="color:#32CD32; text-align:center;">✅ Вы уже оставили отзыв. Спасибо!</p>';
                 } else {
-                    form.innerHTML = `
-                        <h3 style="color:var(--green-dark); margin-bottom:0.8rem;">Оставить отзыв</h3>
+                    form.innerHTML = `<h3 style="color:var(--green-dark); margin-bottom:0.8rem;">Оставить отзыв</h3>
                         <input type="text" id="reviewNick" class="input-field" placeholder="Ваш ник" style="background:var(--card-bg); color:var(--text-dark);">
                         <select id="reviewRating" class="input-field" style="background:var(--card-bg); color:var(--text-dark);">
                             <option value="5">⭐⭐⭐⭐⭐ (5)</option>
@@ -827,8 +786,7 @@
                         <textarea id="reviewComment" class="input-field" rows="3" placeholder="Ваш комментарий" style="background:var(--card-bg); color:var(--text-dark);"></textarea>
                         <input type="text" id="reviewSocial" class="input-field" placeholder="Откуда вы? (Discord, Telegram, ВК...)" style="background:var(--card-bg); color:var(--text-dark);">
                         <button id="submitReviewBtn" class="btn">📨 Отправить отзыв</button>
-                        <p id="reviewError" style="color:#ff6b6b; margin-top:0.5rem;"></p>
-                    `;
+                        <p id="reviewError" style="color:#ff6b6b; margin-top:0.5rem;"></p>`;
                     document.getElementById('submitReviewBtn').addEventListener('click', submitReview);
                 }
             }
@@ -873,10 +831,72 @@
                 }
             }
 
+            function toggleReplyForm(reviewId) {
+                const container = document.getElementById(`replyForm-${reviewId}`);
+                if (container.style.display === 'none') {
+                    container.style.display = 'block';
+                    container.innerHTML = `<div class="reply-form">
+                        <textarea id="replyText-${reviewId}" rows="2" placeholder="Текст ответа..."></textarea>
+                        <button class="send-reply-btn" data-id="${reviewId}">Отправить ответ</button>
+                    </div>`;
+                    document.querySelector(`.send-reply-btn[data-id="${reviewId}"]`).addEventListener('click', () => submitReply(reviewId));
+                } else {
+                    container.style.display = 'none';
+                    container.innerHTML = '';
+                }
+            }
+
+            async function submitReply(reviewId) {
+                const text = document.getElementById(`replyText-${reviewId}`).value.trim();
+                if (!text) return alert('Введите текст ответа');
+                try {
+                    const res = await fetch(`${API_URL}/reply`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ reviewId, text, secret: ADMIN_SECRET })
+                    });
+                    const data = await res.json();
+                    if (data.success) loadReviews();
+                    else alert(data.error || 'Ошибка');
+                } catch (err) {
+                    alert('Ошибка соединения');
+                }
+            }
+
+            // Административная панель
+            const adminLoginDiv = document.getElementById('adminLogin');
+            const showAdminLoginBtn = document.getElementById('showAdminLogin');
+            const adminKeyInput = document.getElementById('adminKey');
+            const adminLoginBtn = document.getElementById('adminLoginBtn');
+
+            if (isAdmin) showAdminLoginBtn.textContent = '🔓 Админ (выход)';
+            showAdminLoginBtn.addEventListener('click', () => {
+                if (isAdmin) {
+                    localStorage.removeItem('foggyland_admin');
+                    isAdmin = false;
+                    showAdminLoginBtn.textContent = '🔑 Админ';
+                    adminLoginDiv.style.display = 'none';
+                    loadReviews();
+                } else {
+                    adminLoginDiv.style.display = 'flex';
+                }
+            });
+            adminLoginBtn.addEventListener('click', () => {
+                const key = adminKeyInput.value.trim();
+                if (key === ADMIN_SECRET) {
+                    localStorage.setItem('foggyland_admin', 'true');
+                    isAdmin = true;
+                    showAdminLoginBtn.textContent = '🔓 Админ (выход)';
+                    adminLoginDiv.style.display = 'none';
+                    adminKeyInput.value = '';
+                    loadReviews();
+                } else alert('Неверный ключ');
+            });
+
             function startReviewsAutoRefresh() {
                 if (reviewsAutoRefresh) clearInterval(reviewsAutoRefresh);
                 loadReviews();
-                reviewsAutoRefresh = setInterval(loadReviews, 10000);
+                reviewsAutoRefresh = setInterval(loadReviews, 30000); // 30 секунд
             }
 
             function onReviewsOpen() {
@@ -891,7 +911,7 @@
 
             createFireflies();
             updateStatus();
-            setInterval(updateStatus, 45000);
+            setInterval(updateStatus, 10000);
         })();
     </script>
 </body>
