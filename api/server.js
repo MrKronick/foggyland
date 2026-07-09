@@ -8,7 +8,7 @@ app.use(cors());
 app.use(express.json());
 
 const DATA_FILE = path.join(__dirname, 'reviews.json');
-const ADMIN_SECRET = process.env.ADMIN_SECRET || '951902secretkey';
+const ADMIN_SECRET = process.env.ADMIN_SECRET || '951902secret';
 
 if (!fs.existsSync(DATA_FILE)) {
   fs.writeFileSync(DATA_FILE, '[]', 'utf8');
@@ -19,7 +19,7 @@ function loadReviews() {
     const raw = fs.readFileSync(DATA_FILE, 'utf8');
     return JSON.parse(raw);
   } catch (e) {
-    console.error('Ошибка чтения файла отзывов:', e);
+    console.error('Ошибка чтения:', e);
     return [];
   }
 }
@@ -31,6 +31,14 @@ function saveReviews(reviews) {
 app.get('/reviews', (req, res) => {
   const reviews = loadReviews();
   res.json(reviews);
+});
+
+// Маршрут проверки IP (добавлен)
+app.get('/check-ip', (req, res) => {
+  const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress;
+  const reviews = loadReviews();
+  const hasReviewed = reviews.some(r => r.ip === ip);
+  res.json({ allowed: !hasReviewed });
 });
 
 app.post('/reviews', (req, res) => {
@@ -54,16 +62,15 @@ app.post('/reviews', (req, res) => {
     social: social || '',
     ip,
     date: new Date().toISOString(),
-    reply: null   // <-- поле для ответа
+    reply: null
   };
 
   reviews.push(newReview);
   saveReviews(reviews);
-
   res.status(201).json({ success: true });
 });
 
-// Добавление/обновление ответа администратора
+// Ответ на отзыв
 app.post('/reply', (req, res) => {
   const { reviewId, text, secret } = req.body;
   if (secret !== ADMIN_SECRET) {
@@ -75,15 +82,9 @@ app.post('/reply', (req, res) => {
 
   const reviews = loadReviews();
   const review = reviews.find(r => r.id == reviewId);
-  if (!review) {
-    return res.status(404).json({ error: 'Отзыв не найден' });
-  }
+  if (!review) return res.status(404).json({ error: 'Отзыв не найден' });
 
-  review.reply = {
-    text,
-    date: new Date().toISOString()
-  };
-
+  review.reply = { text, date: new Date().toISOString() };
   saveReviews(reviews);
   res.json({ success: true });
 });
