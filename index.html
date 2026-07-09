@@ -659,7 +659,7 @@
             async function updateStatus() {
                 const container = document.getElementById('serverStatus');
                 try {
-                    const resp = await fetch('https://api.mcsrvstat.us/2/foggyland.ru');
+                    const resp = await fetch('https://api.mcsrvstat.us/2/93.120.184.204');
                     const data = await resp.json();
                     if (data.online) container.innerHTML = `<span class="status-dot online"></span> Онлайн • Игроков: ${data.players.online}`;
                     else container.innerHTML = `<span class="status-dot offline"></span> Оффлайн`;
