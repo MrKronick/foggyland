@@ -1,58 +1,46 @@
 const express = require('express');
 const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Твой JSONBin контейнер и API-ключ
-const BIN_URL = 'https://api.jsonbin.io/v3/b/6a4ce18bda38895dfe3a39ba';
-const MASTER_KEY = '$2a$10$3B3/ISmfOUqsiYCSqnmEXuiqTvR71v1z1Qyr8dFsswufoGVLfHp16';
+const DATA_FILE = path.join(__dirname, 'reviews.json');
+const ADMIN_SECRET = process.env.ADMIN_SECRET || '951902secretkey';
 
-// Загрузка отзывов
-async function loadReviews() {
+if (!fs.existsSync(DATA_FILE)) {
+  fs.writeFileSync(DATA_FILE, '[]', 'utf8');
+}
+
+function loadReviews() {
   try {
-    const res = await fetch(`${BIN_URL}/latest`, {
-      headers: { 'X-Master-Key': MASTER_KEY }
-    });
-    if (!res.ok) return [];
-    const data = await res.json();
-    return data.record || [];
+    const raw = fs.readFileSync(DATA_FILE, 'utf8');
+    return JSON.parse(raw);
   } catch (e) {
-    console.error('Ошибка загрузки:', e);
+    console.error('Ошибка чтения файла отзывов:', e);
     return [];
   }
 }
 
-// Сохранение отзывов
-async function saveReviews(reviews) {
-  try {
-    await fetch(BIN_URL, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Master-Key': MASTER_KEY
-      },
-      body: JSON.stringify(reviews)
-    });
-  } catch (e) {
-    console.error('Ошибка сохранения:', e);
-  }
+function saveReviews(reviews) {
+  fs.writeFileSync(DATA_FILE, JSON.stringify(reviews, null, 2), 'utf8');
 }
 
-app.get('/reviews', async (req, res) => {
-  const reviews = await loadReviews();
+app.get('/reviews', (req, res) => {
+  const reviews = loadReviews();
   res.json(reviews);
 });
 
-app.post('/reviews', async (req, res) => {
+app.post('/reviews', (req, res) => {
   const { nick, rating, comment, social } = req.body;
   if (!nick || !rating || !comment) {
     return res.status(400).json({ error: 'Заполните ник, оценку и комментарий' });
   }
 
   const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress;
-  const reviews = await loadReviews();
+  const reviews = loadReviews();
 
   if (reviews.some(r => r.ip && r.ip === ip)) {
     return res.status(403).json({ error: 'Вы уже оставили отзыв с этого устройства.' });
@@ -65,24 +53,57 @@ app.post('/reviews', async (req, res) => {
     comment,
     social: social || '',
     ip,
-    date: new Date().toISOString()
+    date: new Date().toISOString(),
+    reply: null   // <-- поле для ответа
   };
 
   reviews.push(newReview);
-  await saveReviews(reviews);
+  saveReviews(reviews);
 
   res.status(201).json({ success: true });
 });
 
-// Сброс IP (только для админа)
-app.get('/reset-ips', async (req, res) => {
-  if (req.query.secret !== (process.env.ADMIN_SECRET || 'мой_секретный_ключ_2026')) {
+// Добавление/обновление ответа администратора
+app.post('/reply', (req, res) => {
+  const { reviewId, text, secret } = req.body;
+  if (secret !== ADMIN_SECRET) {
     return res.status(403).json({ error: 'Неверный секретный ключ' });
   }
-  const reviews = await loadReviews();
+  if (!reviewId || !text) {
+    return res.status(400).json({ error: 'Укажите ID отзыва и текст ответа' });
+  }
+
+  const reviews = loadReviews();
+  const review = reviews.find(r => r.id == reviewId);
+  if (!review) {
+    return res.status(404).json({ error: 'Отзыв не найден' });
+  }
+
+  review.reply = {
+    text,
+    date: new Date().toISOString()
+  };
+
+  saveReviews(reviews);
+  res.json({ success: true });
+});
+
+app.get('/reset-ips', (req, res) => {
+  if (req.query.secret !== ADMIN_SECRET) {
+    return res.status(403).json({ error: 'Неверный секретный ключ' });
+  }
+  const reviews = loadReviews();
   const updated = reviews.map(r => ({ ...r, ip: '' }));
-  await saveReviews(updated);
+  saveReviews(updated);
   res.json({ success: true, message: 'IP-адреса сброшены' });
+});
+
+app.get('/reset', (req, res) => {
+  if (req.query.secret !== ADMIN_SECRET) {
+    return res.status(403).json({ error: 'Неверный секретный ключ' });
+  }
+  saveReviews([]);
+  res.json({ success: true, message: 'Все отзывы удалены' });
 });
 
 const PORT = process.env.PORT || 3000;
