@@ -197,8 +197,12 @@
         .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 0.3rem; }
         .status-dot.online { background: #32CD32; box-shadow: 0 0 10px #32CD32; animation: glowDot 1.5s ease-in-out infinite; }
         .status-dot.offline { background: #ff4444; box-shadow: 0 0 8px #ff4444; animation: glowDotOff 2s infinite; }
+        .status-dot.temp-closed { background: #ff0000; box-shadow: 0 0 15px #ff0000; animation: blinkStatus 0.8s infinite; }
+        .status-dot.maintenance { background: #ff8800; box-shadow: 0 0 15px #ff8800; animation: pulseStatus 1.2s infinite; }
         @keyframes glowDot { 0%,100%{ box-shadow:0 0 5px #32CD32; } 50%{ box-shadow:0 0 14px #32CD32; } }
         @keyframes glowDotOff { 0%,100%{ box-shadow:0 0 4px #ff4444; opacity:0.7; } 50%{ box-shadow:0 0 12px #ff4444; opacity:1; } }
+        @keyframes blinkStatus { 0%,100%{ opacity:1; } 50%{ opacity:0.3; } }
+        @keyframes pulseStatus { 0%,100%{ transform: scale(1); } 50%{ transform: scale(1.3); } }
         .footer-note { text-align: center; margin-top: 1.2rem; font-size: 0.75rem; color: var(--text-mid); background: var(--card-bg); padding: 0.6rem; border-radius: 2rem; }
         .rule-category {
             font-size: 1.2rem; font-weight: 800; color: var(--green-dark); margin: 1.5rem 0 0.6rem;
@@ -307,6 +311,19 @@
         .reply-form button { align-self: flex-end; background: #2c5e2c; color: white; border: none; padding: 5px 16px; border-radius: 20px; cursor: pointer; font-weight: 600; }
         .admin-login { margin-bottom: 1rem; display: flex; gap: 0.5rem; align-items: center; }
         .admin-login input { padding: 5px 10px; border-radius: 20px; border: 1px solid #ccc; }
+        .status-selector { margin-bottom: 1rem; }
+        .status-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--gold);
+            color: var(--text-dark);
+            padding: 0.3rem 0.8rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            margin: 0.2rem;
+        }
+        .status-btn.active { background: var(--gold); color: white; }
         .input-field { width: 100%; padding: 10px 15px; border-radius: 30px; border: 1px solid #ccc; background: #fff; color: #333; font-family: inherit; margin-bottom: 10px; box-sizing: border-box; }
         .btn { background: linear-gradient(135deg, #7fa052, #c2a44a); border: none; padding: 10px 25px; border-radius: 30px; font-weight: bold; cursor: pointer; color: white; transition: 0.3s; }
         .btn:hover { transform: scale(1.04); box-shadow: 0 0 14px rgba(200,160,50,0.5); }
@@ -424,6 +441,11 @@
                         <button id="adminLoginBtn" class="btn" style="padding: 5px 15px;">Войти</button>
                     </div>
                     <button id="showAdminLogin" class="btn" style="padding: 5px 15px;">🔑 Админ</button>
+                    <div id="statusSelector" class="status-selector" style="display: none;">
+                        <button class="status-btn active" data-status="">🔄 Авто</button>
+                        <button class="status-btn" data-status="temp-closed">🚧 Временно закрыт</button>
+                        <button class="status-btn" data-status="maintenance">🛠️ Технические работы</button>
+                    </div>
                 </div>
                 <div class="reviews-scroll" id="reviewsList">
                     <div class="loading-spinner" style="text-align:center; padding:2rem;">
@@ -434,12 +456,12 @@
                 <div id="reviewForm" style="margin-top:1.5rem; border-top:1px dashed #c2b56b; padding-top:1.5rem;"></div>
             </div>
         </div>
-        <div class="version-info">🛠️ Версия сайта 1.4 • Обновлено 12.07.2026</div>
+        <div class="version-info">🛠️ Версия сайта 1.5 • Обновлено 15.07.2026</div>
     </div>
     <script>
         (function() {
             const API_URL = 'https://foggyland.onrender.com';
-            const ADMIN_SECRET = '951902secret';
+            const ADMIN_SECRET = '951902qwe';
 
             // Cookie Consent
             const cookieBanner = document.getElementById('cookieBanner');
@@ -656,16 +678,31 @@
                 container.innerHTML = html;
             }
 
-            async function updateStatus() {
+            // Статус сервера
+            function updateStatus() {
                 const container = document.getElementById('serverStatus');
-                try {
-                    const resp = await fetch('https://api.mcsrvstat.us/2/31.204.107.57');
-                    const data = await resp.json();
-                    if (data.online) container.innerHTML = `<span class="status-dot online"></span> Онлайн • Игроков: ${data.players.online}`;
-                    else container.innerHTML = `<span class="status-dot offline"></span> Оффлайн`;
-                } catch {
-                    container.innerHTML = `<span class="status-dot offline"></span> Статус не определён`;
+                const manualStatus = localStorage.getItem('manualStatus');
+                if (manualStatus === 'temp-closed') {
+                    container.innerHTML = `<span class="status-dot temp-closed"></span> 🚧 Временно закрыт`;
+                    return;
                 }
+                if (manualStatus === 'maintenance') {
+                    container.innerHTML = `<span class="status-dot maintenance"></span> 🛠️ Технические работы`;
+                    return;
+                }
+                // Автоматический режим
+                fetch('https://api.mcsrvstat.us/2/31.204.107.57')
+                    .then(resp => resp.json())
+                    .then(data => {
+                        if (data.online) {
+                            container.innerHTML = `<span class="status-dot online"></span> Онлайн • Игроков: ${data.players.online}`;
+                        } else {
+                            container.innerHTML = `<span class="status-dot offline"></span> Оффлайн`;
+                        }
+                    })
+                    .catch(() => {
+                        container.innerHTML = `<span class="status-dot offline"></span> Статус не определён`;
+                    });
             }
 
             window.copyIP = function() {
@@ -868,19 +905,32 @@
             const showAdminLoginBtn = document.getElementById('showAdminLogin');
             const adminKeyInput = document.getElementById('adminKey');
             const adminLoginBtn = document.getElementById('adminLoginBtn');
+            const statusSelector = document.getElementById('statusSelector');
 
-            if (isAdmin) showAdminLoginBtn.textContent = '🔓 Админ (выход)';
+            if (isAdmin) {
+                showAdminLoginBtn.textContent = '🔓 Админ (выход)';
+                statusSelector.style.display = 'block';
+            }
+
+            // Обновляем активную кнопку статуса при загрузке
+            const currentManualStatus = localStorage.getItem('manualStatus') || '';
+            statusSelector.querySelectorAll('.status-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.status === currentManualStatus);
+            });
+
             showAdminLoginBtn.addEventListener('click', () => {
                 if (isAdmin) {
                     localStorage.removeItem('foggyland_admin');
                     isAdmin = false;
                     showAdminLoginBtn.textContent = '🔑 Админ';
                     adminLoginDiv.style.display = 'none';
+                    statusSelector.style.display = 'none';
                     loadReviews();
                 } else {
                     adminLoginDiv.style.display = 'flex';
                 }
             });
+
             adminLoginBtn.addEventListener('click', () => {
                 const key = adminKeyInput.value.trim();
                 if (key === ADMIN_SECRET) {
@@ -888,15 +938,25 @@
                     isAdmin = true;
                     showAdminLoginBtn.textContent = '🔓 Админ (выход)';
                     adminLoginDiv.style.display = 'none';
+                    statusSelector.style.display = 'block';
                     adminKeyInput.value = '';
                     loadReviews();
                 } else alert('Неверный ключ');
             });
 
+            // Обработка выбора статуса
+            statusSelector.addEventListener('click', (e) => {
+                if (!e.target.classList.contains('status-btn')) return;
+                const status = e.target.dataset.status;
+                localStorage.setItem('manualStatus', status);
+                statusSelector.querySelectorAll('.status-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.status === status));
+                updateStatus(); // сразу обновить индикатор
+            });
+
             function startReviewsAutoRefresh() {
                 if (reviewsAutoRefresh) clearInterval(reviewsAutoRefresh);
                 loadReviews();
-                reviewsAutoRefresh = setInterval(loadReviews, 30000); // 30 секунд
+                reviewsAutoRefresh = setInterval(loadReviews, 30000);
             }
 
             function onReviewsOpen() {
@@ -911,8 +971,8 @@
 
             createFireflies();
             updateStatus();
-            setInterval(updateStatus, 10000);
+            setInterval(updateStatus, 45000);
         })();
     </script>
 </body>
-</html>
+</html> 
