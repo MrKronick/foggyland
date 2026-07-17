@@ -10,7 +10,7 @@ const BIN_ID = '6a4ce18bda38895dfe3a39ba'; // твой ID контейнера
 const MASTER_KEY = '$2a$10$3B3/ISmfOUqsiYCSqnmEXuiqTvR71v1z1Qyr8dFsswufoGVLfHp16'; // твой мастер-ключ
 
 const BIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
-const ADMIN_SECRET = process.env.ADMIN_SECRET || '951902secret';
+const ADMIN_SECRET = process.env.ADMIN_SECRET || '951902qwe';
 
 // Загрузка отзывов из JSONBin
 async function loadReviews() {
